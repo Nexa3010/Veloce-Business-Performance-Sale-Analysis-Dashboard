@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Veloce | Business Performance & Sales Analysis Dashboard</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="styles.css">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- App Container -->
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="app-sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <i class="fa-solid fa-chart-line-up logo-icon"></i>
+          <span class="logo-text">VELOCE</span>
+        </div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <ul>
+          <li>
+            <a href="#" class="nav-link active" data-target="panel-overview" id="nav-overview">
+              <i class="fa-solid fa-grid-2-menu nav-icon"></i>
+              <span>Overview</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link" data-target="panel-charts" id="nav-charts">
+              <i class="fa-solid fa-chart-pie nav-icon"></i>
+              <span>Performance</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link" data-target="panel-simulator" id="nav-simulator">
+              <i class="fa-solid fa-sliders nav-icon"></i>
+              <span>What-If Simulator</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link" data-target="panel-explorer" id="nav-explorer">
+              <i class="fa-solid fa-table-list nav-icon"></i>
+              <span>Data Explorer</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle light/dark theme">
+          <i class="fa-solid fa-moon theme-icon-dark"></i>
+          <i class="fa-solid fa-sun theme-icon-light"></i>
+          <span class="theme-text">Toggle Theme</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content" id="app-main-content">
+      
+      <!-- Top Bar -->
+      <header class="top-bar">
+        <div class="top-bar-title">
+          <h1 id="page-title">Executive Dashboard</h1>
+          <p class="subtitle" id="page-subtitle">Real-time sales performance and business health analytics</p>
+        </div>
+        <div class="top-bar-actions">
+          <button id="btn-reset-filters" class="btn btn-secondary">
+            <i class="fa-solid fa-rotate-left"></i> Reset Filters
+          </button>
+        </div>
+      </header>
+
+      <!-- Global Filter Bar -->
+      <section class="filter-bar" id="global-filters">
+        <div class="filter-group">
+          <label for="filter-country"><i class="fa-solid fa-earth-americas"></i> Country</label>
+          <select id="filter-country" class="filter-select">
+            <option value="all">All Countries</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="filter-category"><i class="fa-solid fa-tags"></i> Category</label>
+          <select id="filter-category" class="filter-select">
+            <option value="all">All Categories</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="filter-gender"><i class="fa-solid fa-venus-mars"></i> Gender</label>
+          <select id="filter-gender" class="filter-select">
+            <option value="all">All Genders</option>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="filter-age"><i class="fa-solid fa-user-clock"></i> Age Group</label>
+          <select id="filter-age" class="filter-select">
+            <option value="all">All Age Groups</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- Content Panels -->
+      <div class="panels-container">
+        
+        <!-- Panel 1: Overview Dashboard -->
+        <section id="panel-overview" class="content-panel active">
+          <!-- KPI Metrics Row -->
+          <div class="metrics-grid">
+            <div class="metric-card" id="kpi-revenue">
+              <div class="metric-card-info">
+                <span class="metric-label">Total Revenue</span>
+                <h3 class="metric-value" id="val-revenue">$0.00</h3>
+                <span class="metric-growth positive" id="val-revenue-growth"><i class="fa-solid fa-arrow-up"></i> Baseline</span>
+              </div>
+              <div class="metric-icon-wrapper revenue">
+                <i class="fa-solid fa-money-bill-wave"></i>
+              </div>
+            </div>
+
+            <div class="metric-card" id="kpi-profit">
+              <div class="metric-card-info">
+                <span class="metric-label">Gross Profit</span>
+                <h3 class="metric-value" id="val-profit">$0.00</h3>
+                <span class="metric-growth positive" id="val-profit-growth"><i class="fa-solid fa-arrow-up"></i> Baseline</span>
+              </div>
+              <div class="metric-icon-wrapper profit">
+                <i class="fa-solid fa-hand-holding-dollar"></i>
+              </div>
+            </div>
+
+            <div class="metric-card" id="kpi-margin">
+              <div class="metric-card-info">
+                <span class="metric-label">Profit Margin</span>
+                <h3 class="metric-value" id="val-margin">0.0%</h3>
+                <span class="metric-growth" id="val-margin-growth">Product profitability</span>
+              </div>
+              <div class="metric-icon-wrapper margin">
+                <i class="fa-solid fa-percent"></i>
+              </div>
+            </div>
+
+            <div class="metric-card" id="kpi-orders">
+              <div class="metric-card-info">
+                <span class="metric-label">Total Orders</span>
+                <h3 class="metric-value" id="val-orders">0</h3>
+                <span class="metric-growth positive" id="val-orders-growth"><i class="fa-solid fa-bag-shopping"></i> Volume</span>
+              </div>
+              <div class="metric-icon-wrapper orders">
+                <i class="fa-solid fa-cart-shopping"></i>
+              </div>
+            </div>
+
+            <div class="metric-card" id="kpi-aov">
+              <div class="metric-card-info">
+                <span class="metric-label">Avg Order Value</span>
+                <h3 class="metric-value" id="val-aov">$0.00</h3>
+                <span class="metric-growth" id="val-aov-growth">Per transaction size</span>
+              </div>
+              <div class="metric-icon-wrapper aov">
+                <i class="fa-solid fa-chart-line"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts Row 1 -->
+          <div class="charts-row">
+            <div class="chart-container large">
+              <div class="chart-header">
+                <h3>Revenue & Profit Trends</h3>
+                <span class="chart-subtitle">Monthly sales performance history</span>
+              </div>
+              <div class="chart-body">
+                <canvas id="chart-revenue-trend"></canvas>
+              </div>
+            </div>
+            
+            <div class="chart-container small">
+              <div class="chart-header">
+                <h3>Sales by Product Category</h3>
+                <span class="chart-subtitle">Revenue share by category</span>
+              </div>
+              <div class="chart-body">
+                <canvas id="chart-category-donut"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Panel 2: Performance Charts -->
+        <section id="panel-charts" class="content-panel">
+          <div class="charts-grid-two">
+            <div class="chart-container">
+              <div class="chart-header">
+                <h3>Revenue by Country</h3>
+                <span class="chart-subtitle">Geographic market comparison</span>
+              </div>
+              <div class="chart-body">
+                <canvas id="chart-country-bar"></canvas>
+              </div>
+            </div>
+
+            <div class="chart-container">
+              <div class="chart-header">
+                <h3>Product Sub-Category Sales</h3>
+                <span class="chart-subtitle">Detailed item type performance</span>
+              </div>
+              <div class="chart-body">
+                <canvas id="chart-subcategory-bar"></canvas>
+              </div>
+            </div>
+
+            <div class="chart-container">
+              <div class="chart-header">
+                <h3>Sales by Age Group</h3>
+                <span class="chart-subtitle">Demographic customer split</span>
+              </div>
+              <div class="chart-body">
+                <canvas id="chart-demographics-age"></canvas>
+              </div>
+            </div>
+
+            <div class="chart-container">
+              <div class="chart-header">
+                <h3>Sales by Customer Gender</h3>
+                <span class="chart-subtitle">Customer segment breakdown</span>
+              </div>
+              <div class="chart-body">
+                <canvas id="chart-demographics-gender"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Panel 3: What-If Simulator -->
+        <section id="panel-simulator" class="content-panel">
+          <div class="simulator-layout">
+            <!-- Controls Side -->
+            <div class="sim-card sim-controls">
+              <div class="sim-card-header">
+                <h3>Simulation Controls</h3>
+                <p>Adjust levers to forecast business impact on revenue and profit margin</p>
+              </div>
+              
+              <div class="sim-levers">
+                <!-- Lever 1: Price -->
+                <div class="lever-group">
+                  <div class="lever-info">
+                    <span class="lever-label">Price Adjustment</span>
+                    <span class="lever-value" id="val-slider-price">0%</span>
+                  </div>
+                  <input type="range" id="slider-price" min="-20" max="25" value="0" step="1" class="sim-slider">
+                  <div class="lever-ticks">
+                    <span>-20% (Discount)</span>
+                    <span>Baseline</span>
+                    <span>+25% (Premium)</span>
+                  </div>
+                </div>
+
+                <!-- Lever 2: Cost -->
+                <div class="lever-group">
+                  <div class="lever-info">
+                    <span class="lever-label">COGS (Unit Cost) Adjustment</span>
+                    <span class="lever-value" id="val-slider-cost">0%</span>
+                  </div>
+                  <input type="range" id="slider-cost" min="-20" max="25" value="0" step="1" class="sim-slider">
+                  <div class="lever-ticks">
+                    <span>-20% (Cheaper Materials)</span>
+                    <span>Baseline</span>
+                    <span>+25% (Inflation)</span>
+                  </div>
+                </div>
+
+                <!-- Lever 3: Quantity / Marketing -->
+                <div class="lever-group">
+                  <div class="lever-info">
+                    <span class="lever-label">Sales Volume Change</span>
+                    <span class="lever-value" id="val-slider-volume">0%</span>
+                  </div>
+                  <input type="range" id="slider-volume" min="-30" max="50" value="0" step="1" class="sim-slider">
+                  <div class="lever-ticks">
+                    <span>-30% (Market Slump)</span>
+                    <span>Baseline</span>
+                    <span>+50% (High Growth)</span>
+                  </div>
+                </div>
+
+                <!-- Lever 4: Country Boost -->
+                <div class="lever-group">
+                  <div class="lever-info">
+                    <span class="lever-label">Target Market Expansion</span>
+                    <span class="lever-value" id="val-select-sim-country">None</span>
+                  </div>
+                  <select id="select-sim-country" class="sim-select">
+                    <option value="none">No Specific Target Country</option>
+                  </select>
+                  <p class="select-desc">Applies an additional 15% volume boost to the selected country.</p>
+                </div>
+              </div>
+
+              <div class="sim-actions">
+                <button id="btn-reset-simulator" class="btn btn-outline-danger">
+                  <i class="fa-solid fa-undo"></i> Reset Leverage Levers
+                </button>
+              </div>
+            </div>
+
+            <!-- Dashboard Side -->
+            <div class="sim-results">
+              <div class="sim-metrics-row">
+                <div class="sim-metric-box">
+                  <span class="box-label">Simulated Revenue</span>
+                  <div class="box-number" id="sim-revenue">$0.00</div>
+                  <div class="box-delta" id="sim-revenue-delta">+0% vs Baseline</div>
+                </div>
+                
+                <div class="sim-metric-box">
+                  <span class="box-label">Simulated Profit</span>
+                  <div class="box-number" id="sim-profit">$0.00</div>
+                  <div class="box-delta" id="sim-profit-delta">+0% vs Baseline</div>
+                </div>
+
+                <div class="sim-metric-box">
+                  <span class="box-label">Simulated Profit Margin</span>
+                  <div class="box-number" id="sim-margin">0.0%</div>
+                  <div class="box-delta" id="sim-margin-delta">+0.0% vs Baseline</div>
+                </div>
+              </div>
+
+              <div class="sim-chart-card">
+                <div class="sim-chart-header">
+                  <h3>Original vs. Simulated Revenue by Category</h3>
+                  <p>Comparing baseline results with what-if scenario</p>
+                </div>
+                <div class="sim-chart-body">
+                  <canvas id="chart-sim-comparison"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Panel 4: Data Explorer -->
+        <section id="panel-explorer" class="content-panel">
+          <div class="explorer-card">
+            <!-- Action bar inside table -->
+            <div class="explorer-header">
+              <div class="explorer-search">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="explorer-search-input" placeholder="Search by product, category, or country...">
+              </div>
+              <div class="explorer-actions">
+                <div class="page-size-selector">
+                  <label for="select-page-size">Show</label>
+                  <select id="select-page-size" class="filter-select select-sm">
+                    <option value="10">10 rows</option>
+                    <option value="25" selected>25 rows</option>
+                    <option value="50">50 rows</option>
+                    <option value="100">100 rows</option>
+                  </select>
+                </div>
+                <button id="btn-export-csv" class="btn btn-primary btn-sm">
+                  <i class="fa-solid fa-file-export"></i> Export CSV
+                </button>
+              </div>
+            </div>
+
+            <!-- Data Table wrapper for horizontal scrolling -->
+            <div class="table-responsive">
+              <table class="data-table" id="raw-data-table">
+                <thead>
+                  <tr>
+                    <th data-column="Date" class="sortable">Date <i class="fa-solid fa-sort"></i></th>
+                    <th data-column="Country" class="sortable">Country <i class="fa-solid fa-sort"></i></th>
+                    <th data-column="Product_Category" class="sortable">Category <i class="fa-solid fa-sort"></i></th>
+                    <th data-column="Sub_Category" class="sortable">Sub-Category <i class="fa-solid fa-sort"></i></th>
+                    <th data-column="Product" class="sortable">Product <i class="fa-solid fa-sort"></i></th>
+                    <th data-column="Order_Quantity" class="sortable numeric">Qty <i class="fa-solid fa-sort"></i></th>
+                    <th data-column="Unit_Price" class="sortable numeric">Price <i class="fa-solid fa-sort"></i></th>
+                    <th data-column="Revenue" class="sortable numeric">Revenue <i class="fa-solid fa-sort"></i></th>
+                    <th data-column="Profit" class="sortable numeric">Profit <i class="fa-solid fa-sort"></i></th>
+                  </tr>
+                </thead>
+                <tbody id="table-body">
+                  <!-- JS will dynamically inject records here -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Table pagination footer -->
+            <div class="explorer-footer">
+              <div class="pagination-info" id="pagination-info-text">
+                Showing 0 to 0 of 0 entries
+              </div>
+              <div class="pagination-controls" id="pagination-buttons">
+                <button class="btn btn-secondary btn-sm" id="btn-page-prev" disabled><i class="fa-solid fa-chevron-left"></i> Previous</button>
+                <span class="page-numbers" id="page-numbers-container"></span>
+                <button class="btn btn-secondary btn-sm" id="btn-page-next" disabled>Next <i class="fa-solid fa-chevron-right"></i></button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loading-screen">
+    <div class="spinner-container">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Loading dataset, please wait...</p>
+      <div class="loading-progress" id="loading-progress-bar" style="width: 0%;"></div>
+    </div>
+  </div>
+
+  <!-- Custom JS -->
+  <script src="app.js"></script>
+</body>
+</html>
